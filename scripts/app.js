@@ -42,11 +42,14 @@ var demo = (function(){
 
     var reflectionCube = new THREE.CubeTextureLoader().load(urls);
     reflectionCube.format = THREE.RGBFormat;
-    scene.background = reflectionCube;
+
+    var refractionCube = new THREE.CubeTextureLoader().load(urls);
+    refractionCube.mapping = THREE.CubeRefractionMapping;
+
 
     document.getElementById('webgl-container').appendChild(renderer.domElement);
 
-      camera = new THREE.PerspectiveCamera(
+    camera = new THREE.PerspectiveCamera(
       35,
       window.innerWidth / window.innerHeight,
       1,
@@ -82,17 +85,15 @@ var demo = (function(){
     var texture = new THREE.TextureLoader().load("models/carColorMap.png");
     var mat = new THREE.MeshLambertMaterial({
       map: texture,
+      color: 0x990000,
       envMap: reflectionCube,
-      // metalness: .8,
-      // specular: 0xCCCCCC,
-      // shininess: 0,
       combine: THREE.MixOperation,
-      reflectivity: .4,
+      reflectivity: .1,
       shading: THREE.SmoothShading,
       side: THREE.DoubleSide
     });
 
-    loaderFunc(scene, "models/frame.js", mat, false, false);
+    loaderFunc(scene, "models/frame.js", mat, true, false);
 
     //Tires Geometry Mesh..........................................
 
@@ -102,178 +103,391 @@ var demo = (function(){
       map: texture,
       bumpMap: textureBump,
       bumpScale: .2,
-      // specular: 0xCCCCCC,
+      specular: 0x000000,
       shininess: 0,
       shading: THREE.SmoothShading,
       side: THREE.DoubleSide
     });
 
-    loaderFunc(scene, "models/tires.js", mat, false, true);
+    loaderFunc(scene, "models/tires.js", mat, true, true);
 
     // //Rims Geometry Meshes.....................................
 
-      var texture = new THREE.TextureLoader().load("models/metal.png");
-      var mat = new THREE.MeshLambertMaterial({
-        map: texture,
-        envMap: reflectionCube,
-        combine: THREE.MixOperation,
-        reflectivity: .7,
-        shading: THREE.SmoothShading,
-        side: THREE.DoubleSide
-      });
+    var texture = new THREE.TextureLoader().load("models/metal.png");
+    var mat = new THREE.MeshLambertMaterial({
+      map: texture,
+      envMap: reflectionCube,
+      combine: THREE.MixOperation,
+      reflectivity: 1,
+      shading: THREE.SmoothShading,
+      side: THREE.DoubleSide
+    });
 
-    loaderFunc(scene, "models/rims.js", mat, false, false);
+    loaderFunc(scene, "models/rims.js", mat, true, true);
 
     //Undercarriage Geometry Mesh................................
 
-      var mat = new THREE.MeshPhongMaterial({
-        color: 0x000000,
-        specular: 0x000000,
-        shininess: 0,
-        shading: THREE.SmoothShading,
-        side: THREE.DoubleSide
-      });
+    var mat = new THREE.MeshPhongMaterial({
+      color: 0x000000,
+      specular: 0x000000,
+      shininess: 0,
+      shading: THREE.SmoothShading,
+      side: THREE.DoubleSide
+    });
 
-      loaderFunc(scene, "models/under_carriage.js", mat, false, false);
+    loaderFunc(scene, "models/under_carriage.js", mat, false, false);
 
     // //Side Slats Geometry Mesh...............................
 
-      var texture = new THREE.TextureLoader().load("models/darkMetal.png");
-      var mat = new THREE.MeshLambertMaterial({
-        map: texture,
-        envMap: reflectionCube,
-        combine: THREE.MixOperation,
-        reflectivity: .2,
-        shading: THREE.SmoothShading,
-        side: THREE.DoubleSide
-      });
+    var texture = new THREE.TextureLoader().load("models/darkMetal.png");
+    var mat = new THREE.MeshLambertMaterial({
+      map: texture,
+      envMap: reflectionCube,
+      combine: THREE.MixOperation,
+      reflectivity: .2,
+      shading: THREE.SmoothShading,
+      side: THREE.DoubleSide
+    });
 
-      loaderFunc(scene, "models/sideSlats.js", mat, false, false);
+    loaderFunc(scene, "models/sideSlats.js", mat, false, false);
 
     //  Windows Geometry Mesh...............................
 
 
+    var mat = new THREE.MeshLambertMaterial({
+      color: 0x000000,
+      envMap: reflectionCube,
+      combine: THREE.MixOperation,
+      reflectivity: .3,
+      shading: THREE.SmoothShading,
+      side: THREE.DoubleSide
+    });
+
+    loaderFunc(scene, "models/glass.js", mat, false, false);
+
+    // Wipers Lights Geometry Mesh...............................
+
+    var texture = new THREE.TextureLoader().load("models/darkMetal.png");
+    var mat = new THREE.MeshLambertMaterial({
+      map: texture,
+      reflectivity: .2,
+      shading: THREE.SmoothShading,
+      side: THREE.DoubleSide
+    });
+
+    loaderFunc(scene, "models/wipers.js", mat, true, false);
+
+    // //Blades Geometry Meshes...........................
+
+    var texture = new THREE.TextureLoader().load("models/darkMetal.png");
+    var mat = new THREE.MeshPhongMaterial({
+      map: texture,
+      reflectivity: .5,
+      shading: THREE.SmoothShading,
+      side: THREE.DoubleSide,
+    });
+
+    loaderFunc(scene, "models/blades.js", mat, true, false);
+    //
+    // Brake Discs Geometry Mesh..........................
+
+
+    var texture = new THREE.TextureLoader().load("models/darkMetal.png");
+    var mat = new THREE.MeshLambertMaterial({
+      map: texture,
+      envMap: reflectionCube,
+      combine: THREE.MixOperation,
+      reflectivity: .2,
+      shading: THREE.SmoothShading,
+      side: THREE.DoubleSide
+    });
+
+    loaderFunc(scene, "models/brakeDiscs.js", mat, true, true);
+
+    // Gas Tank Geometry Mesh..........................
+
+    var texture = new THREE.TextureLoader().load("models/metal.png");
+    var mat = new THREE.MeshLambertMaterial({
+      map: texture,
+      envMap: reflectionCube,
+      combine: THREE.MixOperation,
+      reflectivity: 1,
+      shading: THREE.SmoothShading,
+      side: THREE.DoubleSide
+    });
+
+
+    loaderFunc(scene, "models/gasTank.js", mat, false,true);
+
+
+    // Grill Geometry Mesh......................
+
+    var texture = new THREE.TextureLoader().load("models/darkMetal.png");
+    var mat = new THREE.MeshPhongMaterial({
+      map: texture,
+      color: 0x000000,
+      reflectivity: .5,
+      shading: THREE.SmoothShading,
+      side: THREE.DoubleSide,
+    });
+    loaderFunc(scene, "models/grill.js", mat, false, false);
+
+    // Vent and grill backing Geometry Mesh..........................
+
+    var texture = new THREE.TextureLoader().load("models/darkMetal.png");
+    var mat = new THREE.MeshPhongMaterial({
+      map: texture,
+      color: 0x000000,
+      reflectivity: .2,
+      shading: THREE.SmoothShading,
+      side: THREE.DoubleSide,
+    });
+
+    loaderFunc(scene, "models/backing.js", mat, true, false);
+
+    //
+    // Vents Geometry Mesh...........................
+
+    var texture = new THREE.TextureLoader().load("models/darkMetal.png");
+    var mat = new THREE.MeshPhongMaterial({
+      map: texture,
+      color: 0x000000,
+      reflectivity: .2,
+      shading: THREE.SmoothShading,
+      side: THREE.DoubleSide,
+    });
+
+    loaderFunc(scene, "models/vents.js", mat, false, false);
+
+    // Window Separators Geometry Mesh...........................
+    //
+    var texture = new THREE.TextureLoader().load("models/darkMetal.png");
+    var mat = new THREE.MeshPhongMaterial({
+      map: texture,
+      reflectivity: .3,
+      shading: THREE.SmoothShading,
+      side: THREE.DoubleSide,
+    });
+
+      loaderFunc(scene, "models/windowSeparator.js", mat, false, false);
+
+
+    // Air Slats Geometry Mesh...........................
+    //
+    var texture = new THREE.TextureLoader().load("models/darkMetal.png");
+    var mat = new THREE.MeshPhongMaterial({
+      map: texture,
+      reflectivity: .7,
+      shading: THREE.SmoothShading,
+      side: THREE.DoubleSide,
+    });
+
+      loaderFunc(scene, "models/airSlats.js", mat, true, true);
+
+    // TailPipe Backing Geometry Mesh...........................
+    //
+    var texture = new THREE.TextureLoader().load("models/darkMetal.png");
+    var mat = new THREE.MeshPhongMaterial({
+      map: texture,
+      reflectivity: .7,
+      shading: THREE.SmoothShading,
+      side: THREE.DoubleSide,
+    });
+
+      loaderFunc(scene, "models/tailPipeBacking.js", mat, true, false);
+
+    // Tag plate Geometry Mesh...........................
+    //
+    var texture = new THREE.TextureLoader().load("models/darkMetal.png");
+    var mat = new THREE.MeshPhongMaterial({
+      map: texture,
+      reflectivity: .5,
+      shading: THREE.SmoothShading,
+      side: THREE.DoubleSide,
+    });
+
+      loaderFunc(scene, "models/tagPlate.js", mat, true, false);
+
+    // Tail Pipes Geometry Mesh...........................
+    //
+    var texture = new THREE.TextureLoader().load("models/metal.png");
+    var mat = new THREE.MeshLambertMaterial({
+      map: texture,
+      color: 0x000000,
+      envMap: reflectionCube,
+      combine: THREE.MixOperation,
+      reflectivity: .1,
+      shading: THREE.SmoothShading,
+      side: THREE.DoubleSide
+    });
+
+      loaderFunc(scene, "models/pipes.js", mat, true, true);
+
+
+    // Ornaments Geometry Mesh...........................
+    //
+    var texture = new THREE.TextureLoader().load("models/metal.png");
+    var mat = new THREE.MeshLambertMaterial({
+      map: texture,
+      envMap: reflectionCube,
+      combine: THREE.MixOperation,
+      reflectivity: 1,
+      shading: THREE.SmoothShading,
+      side: THREE.DoubleSide
+    });
+
+      loaderFunc(scene, "models/ornaments.js", mat, true, true);
+
+    // Mirrors Mesh...........................
+    //
+    var texture = new THREE.TextureLoader().load("models/metal.png");
+    var mat = new THREE.MeshLambertMaterial({
+      map: texture,
+      envMap: reflectionCube,
+      combine: THREE.MixOperation,
+      reflectivity: 1,
+      shading: THREE.SmoothShading,
+      side: THREE.DoubleSide
+    });
+
+      loaderFunc(scene, "models/mirrors.js", mat, true, true);
+
+
+    // Headlights Base Mesh...........................
+    //
+    var texture = new THREE.TextureLoader().load("models/metal.png");
+    var mat = new THREE.MeshLambertMaterial({
+      map: texture,
+      color: 0xffffff,
+      reflectivity:1,
+      shading: THREE.SmoothShading,
+      side: THREE.DoubleSide
+    });
+
+      loaderFunc(scene, "models/headLightBase.js", mat, false, false);
+
+    // Headlights Bulbs Mesh...........................
+    //
+    var texture = new THREE.TextureLoader().load("models/headLightColorMap.png");
+    var mat = new THREE.MeshPhongMaterial({
+      map: texture,
+      color: 0xffffff,
+      specular: 0x000000,
+      shininess: 0,
+      shading: THREE.SmoothShading,
+      side: THREE.DoubleSide,
+      emissive: 0xffffff,
+      emissiveMap: texture
+    });
+
+      loaderFunc(scene, "models/headLightBulbs.js", mat, false, false);
+
+
+    // Headlights Reflector Mesh...........................
+    //
+    var texture = new THREE.TextureLoader().load("models/metal.png");
+    var mat = new THREE.MeshLambertMaterial({
+      map: texture,
+      envMap: reflectionCube,
+      combine: THREE.MixOperation,
+      reflectivity: 1,
+      shading: THREE.SmoothShading,
+      side: THREE.DoubleSide
+    });
+
+      loaderFunc(scene, "models/headLightReflector.js", mat, false, false);
+
+    // LED Base Mesh...........................
+    //
+    var texture = new THREE.TextureLoader().load("models/darkMetal.png");
+    var mat = new THREE.MeshPhongMaterial({
+      map: texture,
+      reflectivity: .5,
+      shading: THREE.SmoothShading,
+      side: THREE.DoubleSide,
+    });
+
+      loaderFunc(scene, "models/ledBase.js", mat, false, false);
+
+    // LED's Mesh...........................
+    //
+    var texture = new THREE.TextureLoader().load("models/carColorMap.png");
+    var mat = new THREE.MeshPhongMaterial({
+      map: texture,
+      color: 0xffffff,
+      specular: 0x000000,
+      shininess: 0,
+      shading: THREE.SmoothShading,
+      side: THREE.DoubleSide,
+      emissive: 0xffffff,
+      emissiveMap: texture
+    });
+
+      loaderFunc(scene, "models/led.js", mat, false, false);
+
+      //  Headlight Lenses Mesh...............................
+
+
       var mat = new THREE.MeshLambertMaterial({
         color: 0x000000,
         envMap: reflectionCube,
         combine: THREE.MixOperation,
-        reflectivity: .3,
+        reflectivity: .8,
+        opacity: .7,
+        transparent: true,
         shading: THREE.SmoothShading,
         side: THREE.DoubleSide
       });
 
-      loaderFunc(scene, "models/glass.js", mat, false, false);
+      loaderFunc(scene, "models/headLightLenses.js", mat, false, false);
 
-    // //Recessed Lights Geometry Mesh...............................
-    //
-    //   var texture = new THREE.TextureLoader().load("models/metal.png");
-    //   var mat = new THREE.MeshPhysicalMaterial({
-    //     map: texture,
-    //     metalness: 1.0,
-    //     shading: THREE.FlatShading,
-    //     side: THREE.DoubleSide
-    //   });
-    //
-    //   loaderFunc(scene, "models/recessed_lights.js", mat, false, false);
-    //
-    // //Lenses Geometry Meshes...........................
-    //
-    //   var texture = new THREE.TextureLoader().load("models/recessLightColorMap.png");
-    //   var mat = new THREE.MeshPhongMaterial({
-    //     map: texture,
-    //     color: 0xffffff,
-    //     specular: 0x000000,
-    //     shininess: 0,
-    //     shading: THREE.FlatShading,
-    //     side: THREE.DoubleSide,
-    //     emissive: 0xffffff,
-    //     emissiveMap: texture
-    //   });
-    //
-    //   loaderFunc(scene, "models/lenses.js", mat, false, false);
-    //
-    // //Desktop #2 Geometry Mesh..........................
-    //
-    //
-    //   var texture = new THREE.TextureLoader().load("models/desktopColorMap.png");
-    //   var mat = new THREE.MeshPhysicalMaterial({
-    //     map: texture,
-    //     reflectivity: .2,
-    //     shading: THREE.FlatShading,
-    //     side: THREE.DoubleSide
-    //   });
-    //
-    // loaderFunc(scene, "models/desktop.js", mat, true, true);
-    //
-    // //Desktop Lift Geometry Mesh..........................
-    //
-    //
-    //   var texture = new THREE.TextureLoader().load("models/desktopColorMap.png");
-    //   var mat = new THREE.MeshPhysicalMaterial({
-    //     map: texture,
-    //     reflectivity: .2,
-    //     shading: THREE.FlatShading,
-    //     side: THREE.DoubleSide
-    //   });
-    //
-    //   loaderFunc(scene, "models/deskTopLift.js", mat, true,true);
-    //
-    //
-    // //Hinges Geometry Mesh......................
-    //
-    //   var texture = new THREE.TextureLoader().load("models/metal.png");
-    //   var mat = new THREE.MeshPhysicalMaterial({
-    //     map: texture,
-    //     reflectivity: .2,
-    //     metalness: 1.0,
-    //     shading: THREE.FlatShading,
-    //     side: THREE.DoubleSide
-    //   });
-    //
-    //   loaderFunc(scene, "models/hinges.js", mat, false, false);
-    //
-    // //Table Legs Geometry Mesh..........................
-    //
-    //   var texture = new THREE.TextureLoader().load("models/metal.png");
-    //   var mat = new THREE.MeshPhysicalMaterial({
-    //     map: texture,
-    //     reflectivity: .2,
-    //     metalness: 1.0,
-    //     shading: THREE.FlatShading,
-    //     side: THREE.DoubleSide
-    //   });
-    //
-    //   loaderFunc(scene, "models/legs.js", mat, true, false);
-    //
-    //
-    // //Track Lights Geometry Mesh...........................
-    //
-    //   var texture = new THREE.TextureLoader().load("models/trackLightingColorMap.png");
-    //   var mat = new THREE.MeshPhysicalMaterial({
-    //     map: texture,
-    //     reflectivity: .2,
-    //     metalness: .3,
-    //     color: 0xffffff,
-    //     shading: THREE.FlatShading,
-    //     side: THREE.DoubleSide
-    //   });
-    //
-    //   loaderFunc(scene, "models/track_lights.js", mat, false, false);
-    //
-    // //Doors Geometry Mesh...........................
-    //
-    //   var texture = new THREE.TextureLoader().load("models/desktopColorMap.png");
-    //   var mat = new THREE.MeshPhysicalMaterial({
-    //     map: texture,
-    //     reflectivity: .3,
-    //     color: 0xffffff,
-    //     shading: THREE.FlatShading,
-    //     side: THREE.DoubleSide
-    //   });
-    //
-    //   loaderFunc(scene, "models/doors.js", mat, false, false);
-    //
-    //
+
+      // Inner Tail Lights Mesh...............................
+
+      var texture = new THREE.TextureLoader().load("models/darkMetal.png");
+      var mat = new THREE.MeshPhongMaterial({
+        map: texture,
+        reflectivity: .5,
+        shading: THREE.SmoothShading,
+        side: THREE.DoubleSide,
+      });
+
+      loaderFunc(scene, "models/innerTailLights.js", mat, false, false);
+
+      // Tail Lights Mesh...........................
+
+      var texture = new THREE.TextureLoader().load("models/tailLightEmissiveColorMap.png");
+      var mat = new THREE.MeshPhongMaterial({
+        map: texture,
+        specular: 0x000000,
+        shininess: 0,
+        shading: THREE.SmoothShading,
+        side: THREE.DoubleSide,
+        emissive: 0xffffff,
+        emissiveMap: texture
+      });
+
+        loaderFunc(scene, "models/tailLights.js", mat, false, false);
+
+        //  Tail light Lenses Mesh...............................
+        var texture = new THREE.TextureLoader().load("models/tailLightColorMap.png");
+        var mat = new THREE.MeshLambertMaterial({
+          map: texture,
+          envMap: reflectionCube,
+          combine: THREE.MixOperation,
+          reflectivity: .1,
+          opacity: .85,
+          transparent: true,
+          shading: THREE.SmoothShading,
+          side: THREE.DoubleSide
+        });
+
+        loaderFunc(scene, "models/tailLightLeneses.js", mat, false, false);
+
+
+
+
+
 
     //Lights..................................
 
@@ -289,16 +503,16 @@ var demo = (function(){
     };
 
     //Point light #1.........................................
-    lights(0xffffff, .7, 950, -700, 20, 225, true, true, 2048, 2048);
+    lights(0xffffff, .8, 950, -700, 20, 225, true, true, 2048, 2048);
 
     //Point light #2.........................................
-    lights(0xffffff, .7, 950, 700, 20, 225, false, true, 0, 0);
+    lights(0xffffff, .8, 950, 700, 20, 225, false, true, 0, 0);
 
     //Point light #3.........................................
-    lights(0xffffff, .7, 950, 250, 20, 225, false, true, 0, 0);
+    lights(0xffffff, .8, 950, 250, 20, 225, false, true, 0, 0);
 
     //Point light #4.........................................
-    lights(0xffffff, .7, 950, -250, 20, 225, false, true, 0, 0);
+    lights(0xffffff, .8, 950, -250, 20, 225, false, true, 0, 0);
 
     //Point light #5.........................................
     lights(0xffffff, .5, 1200, -650, 20, -410, false, true, 0, 0);
@@ -412,9 +626,9 @@ var demo = (function(){
   window.addEventListener('resize', onResize, false);
 
   function onResize(){
-      camera.aspect = window.innerWidth / window.innerHeight;
-      camera.updateProjectionMatrix();
-      renderer.setSize(window.innerWidth , window.innerHeight);
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth , window.innerHeight);
   };
 
   window.onload = initScene;

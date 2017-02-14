@@ -10,12 +10,6 @@ Kd 0.00 0.00 0.00
 Ka 0.00 0.00 0.00
 Tf 1.00 1.00 1.00
 Ni 0.00
-newmtl VRayMtl2SG
-illum 4
-Kd 0.00 0.00 0.00
-Ka 0.00 0.00 0.00
-Tf 1.00 1.00 1.00
-Ni 0.00
 newmtl initialShadingGroup
 illum 4
 Kd 0.50 0.50 0.50
@@ -29,14 +23,6 @@ Ka 0.00 0.00 0.00
 Tf 1.00 1.00 1.00
 map_Kd darkMetal.png
 Ni 1.00
-newmtl phong2SG
-illum 4
-Kd 1.00 1.00 1.00
-Ka 0.00 0.00 0.00
-Tf 1.00 1.00 1.00
-Ni 1.00
-Ks 0.50 0.50 0.50
-Ns 18.00
 newmtl phong3SG
 illum 4
 Kd 0.00 0.00 0.00
@@ -68,6 +54,50 @@ illum 4
 Kd 0.28 0.03 0.03
 Ka 0.00 0.00 0.00
 Tf 0.93 0.93 0.93
+Ni 1.00
+Ks 0.50 0.50 0.50
+Ns 18.00
+newmtl phong7SG
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+map_Kd headLightColorMap.png
+Ni 1.00
+Ks 0.50 0.50 0.50
+Ns 18.00
+newmtl phong8SG
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+map_Kd carColorMAP.png
+Ni 1.00
+Ks 0.50 0.50 0.50
+Ns 18.00
+newmtl phong9SG
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.03 0.03 0.03
+Tf 1.00 1.00 1.00
+map_Kd carColorMAP.jpg
+Ni 1.00
+Ks 0.50 0.50 0.50
+Ns 18.00
+newmtl phong10SG
+illum 4
+Kd 0.87 0.25 0.25
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.50 0.50 0.50
+Ns 18.00
+newmtl phong11SG
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+map_Kd rotatingBaseColor.png
 Ni 1.00
 Ks 0.50 0.50 0.50
 Ns 18.00
